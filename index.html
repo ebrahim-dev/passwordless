@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Define the character encoding and viewport settings for responsiveness -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Set the page title -->
+    <title>Magic Link</title>
+  </head>
+  <body>
+    <!-- Form for user input -->
+    <label for="email"> Enter Email </label>
+    <!-- Label for email input field -->
+    <input type="email" id="email" name="email" required />
+    <!-- Email input field -->
+    <label for="pin"> Enter Pin Code </label>
+    <!-- Label for PIN input field -->
+    <input type="password" id="pin" name="pin" required />
+    <!-- Password input field -->
+    <!-- Dropdowns for smiley selection -->
+    <select id="smiley1" name="smiley1" required>
+      <!-- Dropdown for Smiley 1 -->
+      <option value="">Select Smiley 1</option>
+      <!-- Default option -->
+      <!-- Options for smiley selection -->
+      <option value="😊">😊</option>
+      <option value="😄">😄</option>
+      <option value="😁">😁</option>
+      <option value="😃">😃</option>
+      <option value="😆">😆</option>
+      <option value="😅">😅</option>
+      <option value="😂">😂</option>
+      <option value="😇">😇</option>
+      <option value="😉">😉</option>
+      <option value="😍">😍</option>
+    </select>
+    <select id="smiley2" name="smiley2" required>
+      <option value="">Select Smiley 2</option>
+      <option value="😊">😊</option>
+      <option value="😄">😄</option>
+      <option value="😁">😁</option>
+      <option value="😃">😃</option>
+      <option value="😆">😆</option>
+      <option value="😅">😅</option>
+      <option value="😂">😂</option>
+      <option value="😇">😇</option>
+      <option value="😉">😉</option>
+      <option value="😍">😍</option>
+    </select>
+    <select id="smiley3" name="smiley3" required>
+      <option value="">Select Smiley 3</option>
+      <option value="😊">😊</option>
+      <option value="😄">😄</option>
+      <option value="😁">😁</option>
+      <option value="😃">😃</option>
+      <option value="😆">😆</option>
+      <option value="😅">😅</option>
+      <option value="😂">😂</option>
+      <option value="😇">😇</option>
+      <option value="😉">😉</option>
+      <option value="😍">😍</option>
+    </select>
+    <!-- Radio buttons for login method selection -->
+    <input
+      type="radio"
+      name="loginMethod"
+      id="loginWithPin"
+      value="pin"
+      checked
+    />
+    <!-- Radio button for PIN login method (initially checked) -->
+    <label for="loginWithPin">Login with Pin Code</label>
+    <!-- Label for PIN login method -->
+    <input type="radio" name="loginMethod" id="loginWithLink" value="link" />
+    <!-- Radio button for Magic Link login method -->
+    <label for="loginWithLink">Login with Magic Link</label>
+    <!-- Label for Magic Link login method -->
+    <input
+      type="radio"
+      name="loginMethod"
+      id="loginWithStickers"
+      value="stickers"
+    />
+    <!-- Radio button for Stickers login method -->
+    <label for="loginWithStickers">Login with Stickers</label>
+    <!-- Label for Stickers login method -->
+    <button type="button" onclick="login()">Login</button>
+    <!-- Button to trigger the login function -->
+
+    <script>
+      // Function to handle the login process
+      async function login() {
+        // Retrieve user inputs
+        const email = document.getElementById("email").value; // Get the email value
+        const pinCode = document.getElementById("pin").value; // Get the PIN code value
+        const loginMethod = document.querySelector(
+          'input[name="loginMethod"]:checked'
+        ).value; // Get the selected login method
+        const smiley1 = document.getElementById("smiley1").value; // Get Smiley 1 value
+        const smiley2 = document.getElementById("smiley2").value; // Get Smiley 2 value
+        const smiley3 = document.getElementById("smiley3").value; // Get Smiley 3 value
+
+        // Validation for Stickers login method
+        if (loginMethod === "stickers" && (!smiley1 || !smiley2 || !smiley3)) {
+          alert("Please select all three smileys"); // Display an alert if any smileys are not selected
+          return;
+        }
+
+        // Send a POST request to the server
+        const response = await fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            pinCode,
+            smiley1,
+            smiley2,
+            smiley3,
+            loginMethod,
+          }),
+        });
+
+        // Parse the response and display it in an alert
+        const result = await response.text(); // Convert the response to text
+        alert(result); // Display the response in an alert box
+      }
+    </script>
+  </body>
+</html>
